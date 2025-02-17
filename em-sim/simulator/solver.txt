@@ -1,0 +1,31 @@
+//.(..., ...)
+
+//FDTD
+//Ex, first and foremost 
+float dHz = yeeGrid(x,y,z).Hz.current - yeeGrid(x,y-1,z).Hz.current;
+float dHy = yeeGrid(x,y,z-1).Hy.current - yeeGrid(x,y,z).Hy.current;
+
+yeeGrid(x,y,z).Ex.current = yeeGrid(x,y,z).Ex.last + yeeGrid(x,y,z).Ex.invPermittivity
+*((sp.dt/sp.dy)*(dHz) - (sp.dt/sp.dz)*(dHy) - yeeGrid(x,y,z)*Ex.conductivity*yeeGrid(x,y,z).Ex.last);
+
+//Ey
+
+//Ez
+
+//Hx
+
+//Hy
+
+//Hz
+
+
+//.(..., ...)
+
+for(int z = 0; z < sp.z; z++){
+for(int x = 0; x < sp.x; x++){
+for(int y = 0; y < sp.y; y++){
+
+
+}
+}
+}

@@ -1,0 +1,53 @@
+struct Ex{
+	float current;
+	float last;
+	float invPermittivity;
+	float conductivity;
+};
+struct Ey{
+	float current;
+	float last;
+	float invPermittivity;
+	float conductivity;
+};
+struct Ez{
+	float current;
+	float last;
+	float invPermittivity;
+	float conductivity;
+};
+struct Hx{
+	float current;
+	float last;
+	float permeability;
+};
+struct Hy{
+	float current;
+	float last;
+	float permeability;
+};
+struct Hz{
+	float current;
+	float last;
+	float permeability;
+};
+
+struct YeeTrihedralCell{
+	glm:ivec3 pivot;
+	Ex ex;
+	Ey ey;
+	Ez ez;
+	Hx hx;
+	Hy hy;
+	Hz hz;
+};
+
+class YeeGrid{
+public:
+	std::vector<YeeTrihedralCell> grid; //to be intitialized 
+
+	YeeTrihedralCell& operator()(unsigned int x, unsigned int y, unsigned int z){
+		//perform bounds checking too!
+		return grid[2500*z + 50*x + y];
+	}
+};

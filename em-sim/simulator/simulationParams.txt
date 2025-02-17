@@ -1,0 +1,18 @@
+struct simulationParams{
+	//dimensions
+	int x;
+	int y;
+	int z;
+
+	float dx;
+	float dy;
+	float dz;
+	float dt;
+};
+
+struct physicalConstants{
+	float e0 = 8.854e-12;
+	float u0 = 12.56e-7;
+	float o0 = 0;
+	float c = 299792458;
+};
