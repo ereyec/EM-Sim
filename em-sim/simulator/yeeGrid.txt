@@ -78,7 +78,8 @@ class YeeGrid{
 public:
 	std::vector<YeeTrihedralCell> grid; //to be intitialized 
 
-	YeeGrid(){
+	YeeGrid(){}
+	YeeGrid(simulationParams& sp){
 		grid.resize(sp.x*sp.y*sp.z);
 
 		//initialize all grid components:

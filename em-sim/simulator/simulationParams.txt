@@ -17,4 +17,13 @@ struct physicalConstants{
 	float c = 299792458;
 };
 
-struct simulationState{};
+class simulationState{
+public:
+	int step;
+	float time;
+	YeeGrid yeeGrid;
+
+	simulationState(simulationParams& sp){
+		yeeGrid = YeeGrid(sp);
+	}
+};

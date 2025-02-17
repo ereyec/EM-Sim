@@ -22,10 +22,19 @@ for(int x = 0; x < sp.x; x++){
 	int index01 = fieldTextureXZ.data[zSlice * z + xJump * x + zHalfSlice];
 	int index11 = fieldTextureXZ.data[zSlice * z + xJump * x + zHalfSlice + xHalfJump];
 
-	fieldTextureXZ.data[index00] = blue.x;
-	fieldTextureXZ.data[index00++] = blue.y;
-	fieldTextureXZ.data[index00++] = blue.z;
-	fieldTextureXZ.data[index00++] = 1.0f;
+	bool containsMaterial = !materialGrid.grid[sp.z * z + sp.x * x + sp.y * 0].empty;
+
+	if(!containsMaterial){
+		fieldTextureXZ.data[index00] = blue.x;
+		fieldTextureXZ.data[index00++] = blue.y;
+		fieldTextureXZ.data[index00++] = blue.z;
+		fieldTextureXZ.data[index00++] = 1.0f;
+	}else{
+		fieldTextureXZ.data[index00] = 1.0f;
+		fieldTextureXZ.data[index00++] = 1.0f;
+		fieldTextureXZ.data[index00++] = 1.0f;
+		fieldTextureXZ.data[index00++] = 1.0f;
+	}
 
 	float ExClamped = glm::clamp(yeeGrid(x, 0, z).Ex.current, 0, 100);
 	float lerpVal = ExClamped / 100.f;

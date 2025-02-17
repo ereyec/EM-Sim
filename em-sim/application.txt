@@ -1,0 +1,18 @@
+class Application{
+public:
+	Application(){}
+	
+	int init(Context& context);
+	void run(Context& context, Common& common);
+	void cleanup(Context& context);
+};
+
+void Application::run(Context& context, Common& common){
+	simulationParams sp = {200, 0, 200, 0.01, 0.01, 0.01, 1.667e-11};
+	physicalConstants pc;
+	simulationState ss(sp);
+	for(;;){
+		solveSingleIteration(sp, ss);
+	}
+
+}

@@ -1,7 +1,7 @@
 //.(..., ...)
 
 //FDTD
-void updateEComponents(){
+void updateEComponents(simulationParams& sp, simulationState& ss){
 float dHx, dHy, dHz;
 
 dHz = yeeGrid(x,y,z).Hz.current - yeeGrid(x,y-1,z).Hz.current;
@@ -25,7 +25,7 @@ yeeGrid(x,y,z).Ez.current = yeeGrid(x,y,z).Ez.last + yeeGrid(x,y,z).Ez.invPermit
 *( (sp.dt/sp.dx)*(dHy) - (sp.dt/sp.dy)*(dHx) - yeeGrid(x,y,z).Ez.conductivity.yeeGrid(x,y,z).Ez.last);
 }
 
-void updateHComponents(){
+void updateHComponents(simulationParams& sp, simulationState& ss){
 //Hx
 float dEx, dEy, dEz;
 
@@ -51,7 +51,7 @@ yeeGrid(x,y,z).Hz.current = yeeGrid(x,y,z).Hz.last + (1/yeeGrid(x,y,z).Hz.permea
 }
 
 
-void solveSingleIteration(){
+void solveSingleIteration(simulationParams& sp, simulationState& ss){
 //iterate through all grid components
 for(int z = 0; z < sp.z; z++){
 for(int x = 0; x < sp.x; x++){
@@ -59,20 +59,21 @@ for(int y = 0; y < sp.y; y++){
 	//hard sourcing a wave
 	float Emax = 100.f;
 	float omega = 1.884e10;
-	float E = Emax*std::cos(omega * time);
-	yeeGrid(2,0,2).Ex.current = E; //do we only need Ex? What will happen if we set Ez?
+	float E = Emax*std::cos(omega * ss.time);
+	ss.yeeGrid(2,0,2).Ex.current = E; //do we only need Ex? What will happen if we set Ez?
 	
-	if(step%2 == 0){ //electric components
-		updateEComponents();
+	if(ss.step%2 == 0){ //electric components
+		updateEComponents(sp, ss);
 	}
 	else{ //magnetic components
-		updateHComponents();
+		updateHComponents(sp, ss);
 	}
 
 	//write to file
 	saveSimOutputEx();	
 
-	if(step > 5) break; //want only a few steps first time running
+	if(ss.step > 5) break; //want only a few steps first time running
+	ss.step++;
 }}}
 
 }
