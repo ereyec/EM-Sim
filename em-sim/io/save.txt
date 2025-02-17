@@ -12,9 +12,12 @@ if(outputFile == NULL){
 	return -1;
 }
 
+for(int z = 0; z < sp.z; z++){
 for(int x = 0; x <= sp.x; x++){
-	fprintf(outputFile, "%f, ", yeeGrid(x, 0, 0).Ex.current);
+	fprintf(outputFile, "%f, ", yeeGrid(x, 0, z).Ex.current);
 }
-fprintf(outputFile, "%f\n", yeeGrid(sp.x-1, 0, 0).Ex.current);
+fprintf(outputFile, "%f\n", yeeGrid(sp.x-1, 0, z).Ex.current);
+}
 
 fclose(outputFile);
+return 0;
