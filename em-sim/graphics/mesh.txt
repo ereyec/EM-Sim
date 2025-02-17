@@ -1,0 +1,10 @@
+struct quadVertices{
+	inline static glm::vec3 v1 = glm::vec3(-1.0f, 1.0f, 0.0f);
+	inline static glm::vec3 v2 = glm::vec3(1.0f, 1.0f, 0.0f);
+	inline static glm::vec3 v3 = glm::vec3(-1.0f, -1.0f, 0.0f);
+	inline static glm::vec3 v4 = glm::vec3(1.0f, -1.0f, 0.0f);
+	inline static glm::vec2 t1 = glm::vec2(0, 1);
+	inline static glm::vec2 t2 = glm::vec2(1, 1);
+	inline static glm::vec2 t3 = glm::vec2(0, 0);
+	inline static glm::vec2 t4 = glm::vec2(1, 0);
+};

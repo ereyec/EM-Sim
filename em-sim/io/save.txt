@@ -1,7 +1,7 @@
 //Two types of files we want to save, a grid workspace and a simulation screenshot
 
 //Save a simulation screenshot
-//int .(..., ...)
+int saveSimOutputEx(){
 //for simplicity, we will work with just the xz plane (y= 0), and just print the Ex component
 
 std::string filename = "Sim-Output-Ex-step" + step + ".csv";
@@ -21,3 +21,4 @@ fprintf(outputFile, "%f\n", yeeGrid(sp.x-1, 0, z).Ex.current);
 
 fclose(outputFile);
 return 0;
+}

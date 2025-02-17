@@ -1,8 +1,8 @@
 //.(..., ...)
 
 //FDTD
-//Ex, first and foremost 
-float dHx, dHy, dHz, dEx, dEy, dEz;
+void updateEComponents(){
+float dHx, dHy, dHz;
 
 dHz = yeeGrid(x,y,z).Hz.current - yeeGrid(x,y-1,z).Hz.current;
 dHy = yeeGrid(x,y,z-1).Hy.current - yeeGrid(x,y,z).Hy.current;
@@ -23,8 +23,12 @@ dHx = yeeGrid().Hx.current - yeeGrid().Hx.current;
 
 yeeGrid(x,y,z).Ez.current = yeeGrid(x,y,z).Ez.last + yeeGrid(x,y,z).Ez.invPermittivity
 *( (sp.dt/sp.dx)*(dHy) - (sp.dt/sp.dy)*(dHx) - yeeGrid(x,y,z).Ez.conductivity.yeeGrid(x,y,z).Ez.last);
+}
 
+void updateHComponents(){
 //Hx
+float dEx, dEy, dEz;
+
 dEy = yeeGrid().Ey.current - yeeGrid().Ey.current;
 dEz = yeeGrid().Ez.current - yeeGrid().Ez.current;
 
@@ -44,25 +48,31 @@ dEy = yeeGrid().Ey.current - yeeGrid().Ey.current;
 
 yeeGrid(x,y,z).Hz.current = yeeGrid(x,y,z).Hz.last + (1/yeeGrid(x,y,z).Hz.permeability)
 *( (sp.dt/sp.dy)*dEx - (sp.dt/sp.dx)*dEy);
+}
 
 
-//.(..., ...) 
-//sourcing a wave
-float Emax = 100.f;
-float omega = 1.884e10;
-float E = Emax*std::sin(omega * time);
-yeeGrid(2,0,2).Ex.current = E; //do we only need Ex? What will happen if we set Ez?
-
-//.(..., ...)
+void solveSingleIteration(){
 //iterate through all grid components
 for(int z = 0; z < sp.z; z++){
 for(int x = 0; x < sp.x; x++){
 for(int y = 0; y < sp.y; y++){
-	if(step%2 == 0){} //electric components
-	else{} //magnetic components
+	//hard sourcing a wave
+	float Emax = 100.f;
+	float omega = 1.884e10;
+	float E = Emax*std::cos(omega * time);
+	yeeGrid(2,0,2).Ex.current = E; //do we only need Ex? What will happen if we set Ez?
+	
+	if(step%2 == 0){ //electric components
+		updateEComponents();
+	}
+	else{ //magnetic components
+		updateHComponents();
+	}
 
-	//<- write to file
+	//write to file
+	saveSimOutputEx();	
+
 	if(step > 5) break; //want only a few steps first time running
-}
-}
+}}}
+
 }

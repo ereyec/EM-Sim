@@ -37,5 +37,27 @@ for(int x = 0; x < sp.x; x++){
 	fieldTextureXZ.data[index10++] = color10.y;
 	fieldTextureXZ.data[index10++] = color10.z;
 	fieldTextureXZ.data[index10++] = 1.0f;
+
+	float EzClamped = glm::clamp(yeeGrid(x, 0, z).Ez.current, 0, 100);
+	lerpVal = EzClamped / 100.f;
+	blue = 1 - lerpVal;
+	red = lerpVal;
+	glm::vec3 color01 = glm::vec3(red, 0, blue);
+
+	fieldTextureXZ.data[index01] = color01.x;
+	fieldTextureXZ.data[index01++] = color01.y;
+	fieldTextureXZ.data[index01++] = color01.z;
+	fieldTextureXZ.data[index01++] = 1.0f;
+
+	float HyClamped = glm::clamp(yeeGrid(x, 0, z).Hy.current, 0, 100);
+	lerpVal = HyClamped / 100.f;
+	blue = 1 - lerpVal;
+	float green = lerpVal;
+	glm::vec3 color11 = glm::vec3(0, green, blue);
+
+	fieldTextureXZ.data[index11] = color11.x;
+	fieldTextureXZ.data[index11++] = color11.y;
+	fieldTextureXZ.data[index11++] = color11.z;
+	fieldTextureXZ.data[index11++] = 1.0f;
 }
 }

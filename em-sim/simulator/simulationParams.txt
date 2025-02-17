@@ -16,3 +16,5 @@ struct physicalConstants{
 	float o0 = 0;
 	float c = 299792458;
 };
+
+struct simulationState{};
