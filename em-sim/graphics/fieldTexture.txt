@@ -1,6 +1,9 @@
+#ifndef FIELDTEXTURE_H
+#define FIELDTEXTURE_H
+
+void updateFieldTexture(Context& context, simulationParams& sp, simulationState& ss){
 const int nrChannels = 4;
 glm::vec3 blue = glm::vec3(0,0,1);
-
 Texturef fieldTextureXZ(sp.x * 2, sp.z * 2);
 fieldTextureXZ.data = (float*)malloc(sp.x * 2 * sp.z * 2 * nrChannels * sizeof(float));
 
@@ -11,8 +14,7 @@ fieldTextureXZ.data = (float*)malloc(sp.x * 2 * sp.z * 2 * nrChannels * sizeof(f
 //This will probably be too slow to run at a reasonable pace, in that case we could switch to compute shaders
 //for both the simulator and texture writes.
 //Fill the texture:
-for(int z = 0; z < sp.z; z++){
-for(int x = 0; x < sp.x; x++){
+for(int z = 0; z < sp.z; z++){ for(int x = 0; x < sp.x; x++){
 	int zSlice = sp.x*4*4;
 	int zHalfSlice = sp.x*2*4;
 	int xJump = 8;
@@ -68,5 +70,11 @@ for(int x = 0; x < sp.x; x++){
 	fieldTextureXZ.data[index11++] = color11.y;
 	fieldTextureXZ.data[index11++] = color11.z;
 	fieldTextureXZ.data[index11++] = 1.0f;
+}}
+
+glBindTexture(GL_TEXTURE_2D, context.fieldTextureXZ.ID);
+glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, sp.x, sp.z, 0, GL_RGBA, GL_FLOAT, context.fieldTextureXZ.data);
+glBindTexture(GL_TEXTURE_2D, 0);
+
 }
-}
+#endif

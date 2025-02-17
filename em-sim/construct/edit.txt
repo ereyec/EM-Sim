@@ -1,13 +1,4 @@
 //SETTINGS: Brush / eraser
-
-struct materialSelection{
-	inline static float e;
-	inline static float o;
-	inline static float u;
-	inline static bool eraser;
-};
-
-
 double mouseXCurrent = 0.0;
 double mouseYCurrent = 0.0;
 int leftbuttonStateCurrent = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);

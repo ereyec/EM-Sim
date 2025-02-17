@@ -1,13 +1,23 @@
+#ifndef APPLICATION_H
+#define APPLICATION_H
+
+#include "context.h"
+#include "common.h"
+
 class Application{
 public:
 	Application(){}
 	
 	int init(Context& context);
-	void run(Context& context, Common& common);
+	void run(Context& context);
 	void cleanup(Context& context);
 };
 
-void Application::run(Context& context, Common& common){
+void Application::init(){
+
+}
+
+void Application::run(Context& context){
 	simulationParams sp = {200, 0, 200, 0.01, 0.01, 0.01, 1.667e-11};
 	physicalConstants pc;
 	simulationState ss(sp);
@@ -16,3 +26,9 @@ void Application::run(Context& context, Common& common){
 	}
 
 }
+
+void Application::cleanup(){
+
+}
+
+#endif

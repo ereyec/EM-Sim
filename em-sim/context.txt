@@ -1,3 +1,6 @@
+#ifndef CONTEXT_H
+#define CONTEXT_H
+
 #include "../include/engine/Camera.h"
 #include "../include/engine/Shader.h"
 #include "../include/engine/Texture.h"
@@ -20,3 +23,5 @@ struct Context{
 	unsigned int qVAO;
 	unsigned int qVBO;
 };
+
+#endif

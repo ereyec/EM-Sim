@@ -1,30 +1,62 @@
-//Two types of files we want to save, a grid workspace and a simulation screenshot
+#ifndef SAVE_H
+#define SAVE_H
 
-//Save a simulation screenshot
+//Save Ex
 int saveSimOutputEx(simulationParams& sp, simulationState& ss){
-//for simplicity, we will work with just the xz plane (y= 0), and just print the Ex component
-
 std::string filename = "Sim-Output-Ex-step" + ss.step + ".csv";
 FILE* outputFile;
 outputFile = fopen(filename.c_str(), "w");
-
 if(outputFile == NULL){
 	return -1;
 }
-
 for(int z = 0; z < sp.z; z++){
 for(int x = 0; x <= sp.x; x++){
 	fprintf(outputFile, "%f, ", ss.yeeGrid(x, 0, z).Ex.current);
 }
 fprintf(outputFile, "%f\n", ss.yeeGrid(sp.x-1, 0, z).Ex.current);
 }
+fclose(outputFile);
+return 0;
+}
 
+//Save Ey
+int saveSimOutputEy(simulationParams& sp, simulationState& ss){
+std::string filename = "Sim-Output-Ey-step" + ss.step + ".csv";
+FILE* outputFile;
+outputFile = fopen(filename.c_str(), "w");
+if(outputFile == NULL){
+	return -1;
+}
+for(int z = 0; z < sp.z; z++){
+for(int x = 0; x <= sp.x; x++){
+	fprintf(outputFile, "%f, ", ss.yeeGrid(x, 0, z).Ey.current);
+}
+fprintf(outputFile, "%f\n", ss.yeeGrid(sp.x-1, 0, z).Ey.current);
+}
+fclose(outputFile);
+return 0;
+}
+
+//Save Ez
+int saveSimOutputEz(simulationParams& sp, simulationState& ss){
+std::string filename = "Sim-Output-Ez-step" + ss.step + ".csv";
+FILE* outputFile;
+outputFile = fopen(filename.c_str(), "w");
+if(outputFile == NULL){
+	return -1;
+}
+for(int z = 0; z < sp.z; z++){
+for(int x = 0; x <= sp.x; x++){
+	fprintf(outputFile, "%f, ", ss.yeeGrid(x, 0, z).Ez.current);
+}
+fprintf(outputFile, "%f\n", ss.yeeGrid(sp.x-1, 0, z).Ez.current);
+}
 fclose(outputFile);
 return 0;
 }
 
 //Save a grid workspace
-void saveGridWorkspace(){
+void saveGridWorkspace(simulationState& ss){
 std::string filename; //will be set by the user
 FILE* outputFile;
 outputFile = fopen(filename.c_str(), "w");
@@ -32,16 +64,18 @@ if(outputFile == NULL){
 	return -1;
 }
 fprintf("%d %d %d ", sp.x, sp.y, sp.z);
-for(int i = 0; i < materialGrid.size(); i++){
+for(int i = 0; i < ss.materialGrid.size(); i++){
 	float e, o, u;
 	int empty;
-	e = materialGrid[i].permittivity;
-	o = materialGrid[i].conductivity;
-	u = materialGrid[i].permeability;
-	empty = (int)materialGrid[i].empty; //careful with the cast here
+	e = ss.materialGrid[i].permittivity;
+	o = ss.materialGrid[i].conductivity;
+	u = ss.materialGrid[i].permeability;
+	empty = (int)ss.materialGrid[i].empty; //be careful with the cast here
 	fprintf("%f %f %f %d ", e, o, u, empty);
 }
 fclose(outputFile);
 return 0;
 
 }
+
+#endif
