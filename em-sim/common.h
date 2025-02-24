@@ -119,6 +119,40 @@ public:
 		setBoundaryCell(ytc);
 		for(int i = 0; i < this->grid.size(); i++) this->grid[i] = ytc;
 
+		//parabolic antenna:
+		//focus
+		for(int x = 99; x < 102; x++){
+			grid[41*200 + x].ex.invPermittivity = 0.0f;
+			grid[41*200 + x].ex.conductivity = 1000.f;
+			grid[41*200 + x].ey.invPermittivity = 0.0f;
+			grid[41*200 + x].ey.conductivity = 1000.f;
+			grid[41*200 + x].ez.invPermittivity = 0.0f;
+			grid[41*200 + x].ez.conductivity = 1000.f;
+		}
+		//two parabolic antennas: one transmitter and one receiver.
+		for(int z = 0; z < 200; z++) { for(int x = -60; x <= 60; x++){
+			float zu = x*x/120.f;
+			int xt = x + 100;
+			int zt = zu + 10;
+
+			if(glm::abs(z - zt) < 5){
+				grid[200*z + xt].ex.invPermittivity = 0.0f;
+				grid[200*z + xt].ex.conductivity = 1000.f;
+				grid[200*z + xt].ey.invPermittivity = 0.0f;
+				grid[200*z + xt].ey.conductivity = 1000.f;
+				grid[200*z + xt].ez.invPermittivity = 0.0f;
+				grid[200*z + xt].ez.conductivity = 1000.f;	
+
+				grid[200*(200-z) + xt].ex.invPermittivity = 0.0f;
+				grid[200*(200-z) + xt].ex.conductivity = 1000.f;
+				grid[200*(200-z) + xt].ey.invPermittivity = 0.0f;
+				grid[200*(200-z) + xt].ey.conductivity = 1000.f;
+				grid[200*(200-z) + xt].ez.invPermittivity = 0.0f;
+				grid[200*(200-z) + xt].ez.conductivity = 1000.f;
+			}
+					
+		}}
+
 		//conducting wire injection:
 		/*for(int x=0; x<200; x++){
 			grid[50*200 + x].ex.invPermittivity = 0.0f;
@@ -184,9 +218,37 @@ public:
 		if(withinBounds) return this->grid[this->dimX*z + this->dimY*x + y];
 		else{
 			if(x >= dimX){
-				YeeTrihedralCell last_valid = this->getCell(dimX-1,y,z);
-				return last_valid;
-			}else{
+				//YeeTrihedralCell last_valid = this->getCell(dimX-1,y,z);
+				//return last_valid;
+				return this->grid[this->dimX*z + this->dimY*(dimX-1) + y];
+			}
+			if(x < 0){
+				//YeeTrihedralCell last_valid = this->getCell(0,y,z);
+				//YeeTrihedralCell last_valid = this->grid[this->dimX*z + this->dimY*0 + y];
+				//return last_valid;
+				return this->grid[this->dimX*z + this->dimY*0 + y];
+			}
+			/*if(y >= dimY){
+				//YeeTrihedralCell last_valid = this->getCell(x,dimY-1,z);
+				//return last_valid;
+				return this->grid[this->dimX*z + this->dimY*x + dimY-1];
+			}
+			if(y < 0){
+				//YeeTrihedralCell last_valid = this->getCell(x,0,z);
+				//return last_valid;
+				return this->grid[this->dimX*z + this->dimY*x + 0];
+			}*/
+			if(z >= dimZ){
+				//YeeTrihedralCell last_valid = this->getCell(x,y,dimZ-1);
+				//return last_valid;
+				return this->grid[this->dimX*(dimZ-1) + this->dimY*x + y];
+			}
+			if(z < 0){
+				//YeeTrihedralCell last_valid = this->getCell(x,y,0);
+				//return last_valid;
+				return this->grid[this->dimX*0 + this->dimY*x + y];
+			}
+			else{
 				YeeTrihedralCell ytc;
 				setBoundaryCell(ytc);
 				return ytc;

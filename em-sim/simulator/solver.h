@@ -76,11 +76,13 @@ void updateHComponents(simulationParams& sp, simulationState& ss, int x, int y, 
 
 void solveSingleIteration(simulationParams& sp, simulationState& ss){
 //hard sourcing a wave
-if(1==1){
-float Emax = 1000.f;
+if(ss.step < 50){
+float Emax = 2000.f;
 float omega = 200.f;
 float E = Emax*std::cos(omega * ss.time);
-ss.yeeGrid.setCellEx(100, 0, 100, E);
+ss.yeeGrid.setCellEx(100, 0, 40, E);
+//ss.yeeGrid.setCellEy(100, 0, 100, E);
+//ss.yeeGrid.setCellEz(100, 0, 100, E);
 }
 
 float energy = 0.0f;
@@ -93,18 +95,17 @@ for(int y = 0; y < sp.y; y++){
 	//energy += 0.5*ytc.ex.current*ytc.ex.current + 0.5*ytc.hx.current*ytc.hx.current;
 	//energy += 0.5*ytc.ex.current*ytc.ey.current + 0.5*ytc.hx.current*ytc.hy.current;
 	//energy += 0.5*ytc.ex.current*ytc.ez.current + 0.5*ytc.hx.current*ytc.hz.current;
-		
-	if(x != 199){
-		//Leapfrog mechanism:
-		if(ss.step%2 == 0){
-			updateEComponents(sp, ss, x, y, z);
+
+	//Leapfrog mechanism:
+	if(ss.step%2 == 0){
+		updateEComponents(sp, ss, x, y, z);
+		if (x == 199){
+			applyEngquistMajda(ss, sp, x, y, z);
 		}
-		else{
-			updateHComponents(sp, ss, x, y, z);
-		}
-	}else{
-		applyDampingLayer(ss, sp, x, y, z);
 	}
+	else{
+		updateHComponents(sp, ss, x, y, z);
+	}		
 	
 	
 }}}
